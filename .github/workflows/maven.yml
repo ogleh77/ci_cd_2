@@ -104,7 +104,7 @@ jobs:
         uses: appleboy/ssh-action@v0.1.1
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ogleh
+          username: ubuntu
           port: 80
           key: ${{ secrets.EC2_SSH_KEY }}
           #          passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
