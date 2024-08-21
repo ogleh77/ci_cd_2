@@ -11,9 +11,8 @@ public class Controller {
         return "ASC World";
     }
 
-
     @GetMapping("/greet/{name}")
     public String greet(@PathVariable("name") String name) {
-        return "ASC " + name;
+        return "ASC seetahy odey " + name;
     }
 }
