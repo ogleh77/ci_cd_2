@@ -107,12 +107,12 @@ jobs:
           username: ogleh
           key: ${{ secrets.EC2_SSH_KEY }}
           #          passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
-          script: |
-            docker pull ogleh/ci-cd-repository:latest
-            docker stop ci-cd-container || true
-            docker rm ci-cd-container || true
-            docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
-     
+#          script: |
+#            docker pull ogleh/ci-cd-repository:latest
+#            docker stop ci-cd-container || true
+#            docker rm ci-cd-container || true
+#            docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
+#
 
 
 
