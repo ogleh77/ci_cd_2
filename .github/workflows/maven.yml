@@ -105,6 +105,7 @@ jobs:
         with:
           host: ${{ secrets.EC2_HOST }}
           username: ogleh
+          port: 80
           key: ${{ secrets.EC2_SSH_KEY }}
           #          passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
 #          script: |
