@@ -1,12 +1,60 @@
-### This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
-### For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+#### This workflow will build a Java project with Maven, and cache/restore any dependencies to improve the workflow execution time
+#### For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-maven
+###
+#### This workflow uses actions that are not certified by GitHub.
+#### They are provided by a third-party and are governed by
+#### separate terms of service, privacy policy, and support
+#### documentation.
+###
+###name: ci cd follow
+###
+###on:
+###  push:
+###    branches: [ "main" ]
+###  pull_request:
+###    branches: [ "main" ]
+###
+###jobs:
+###  build:
+###
+###    runs-on: ubuntu-latest
+###
+###    steps:
+###      - uses: actions/checkout@v4
+###      - name: Set up JDK 17
+###        uses: actions/setup-java@v4
+###        with:
+###          java-version: '17'
+###          distribution: 'temurin'
+###          cache: maven
+###      - name: Build with Maven
+###        run: mvn clean install
+###
+###      - name: login to dockerhub
+###        uses: docker/build-push-action@v5
+###        with:
+###          image: ogleh/ci-cd-repository
+###          tags: v1,latest
+###          registry: docker.io
+###          dockerfile: Dockerfile
+###          username: ${{ secrets.DOCKER_USERNAME }}
+###          password: ${{ secrets.DOCKER_PASSWORD }}
+###
+###
+###
+###
+###
+####1-docker login
+####2- build docker image
+####1-push image to docker hub
+###
+###
+####    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
+####    - name: Update dependency graph
+####      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
 ##
-### This workflow uses actions that are not certified by GitHub.
-### They are provided by a third-party and are governed by
-### separate terms of service, privacy policy, and support
-### documentation.
 ##
-##name: ci cd follow
+##name: CI/CD Workflow
 ##
 ##on:
 ##  push:
@@ -20,38 +68,56 @@
 ##    runs-on: ubuntu-latest
 ##
 ##    steps:
+##      # Step 1: Check out the code
 ##      - uses: actions/checkout@v4
+##
+##      # Step 2: Set up JDK 17
 ##      - name: Set up JDK 17
 ##        uses: actions/setup-java@v4
 ##        with:
 ##          java-version: '17'
 ##          distribution: 'temurin'
 ##          cache: maven
-##      - name: Build with Maven
-##        run: mvn clean install
 ##
-##      - name: login to dockerhub
-##        uses: docker/build-push-action@v5
+##      # Step 3: Build with Maven
+##      - name: Build with Maven
+##        run: mvn clean package
+##
+##      # Step 4: Log in to DockerHub
+##      - name: Log in to DockerHub
+##        uses: docker/login-action@v2
 ##        with:
-##          image: ogleh/ci-cd-repository
-##          tags: v1,latest
-##          registry: docker.io
-##          dockerfile: Dockerfile
 ##          username: ${{ secrets.DOCKER_USERNAME }}
 ##          password: ${{ secrets.DOCKER_PASSWORD }}
 ##
+##      # Step 5: Build and Push Docker Image
+##      - name: Build and Push Docker Image
+##        uses: docker/build-push-action@v5
+##        with:
+##          context: .
+##          file: Dockerfile
+##          push: true
+##          tags: ogleh/ci-cd-repository:v1,ogleh/ci-cd-repository:latest
+##
+##          # Step 6: Deploy to AWS EC2
+##      - name: Execute deployment script on EC2
+##        uses: appleboy/ssh-action@v0.1.1
+##        with:
+##          host: ${{ secrets.EC2_HOST }}
+##          username: ec2-user
+##          port: 22
+##          key: ${{ secrets.SSH_PRIVATE_KEY }}
+##          #          passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
+###          script: |
+###            docker pull ogleh/ci-cd-repository:latest
+###            docker stop ci-cd-container || true
+###            docker rm ci-cd-container || true
+###            docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
+###
 ##
 ##
 ##
-##
-###1-docker login
-###2- build docker image
-###1-push image to docker hub
-##
-##
-###    # Optional: Uploads the full dependency graph to GitHub to improve the quality of Dependabot alerts this repository can receive
-###    - name: Update dependency graph
-###      uses: advanced-security/maven-dependency-submission-action@571e99aab1055c2e71a1e2309b9691de18d6b7d6
+#
 #
 #
 #name: CI/CD Workflow
@@ -64,12 +130,12 @@
 #
 #jobs:
 #  build:
-#
 #    runs-on: ubuntu-latest
 #
 #    steps:
 #      # Step 1: Check out the code
-#      - uses: actions/checkout@v4
+#      - name: Checkout code
+#        uses: actions/checkout@v4
 #
 #      # Step 2: Set up JDK 17
 #      - name: Set up JDK 17
@@ -99,7 +165,15 @@
 #          push: true
 #          tags: ogleh/ci-cd-repository:v1,ogleh/ci-cd-repository:latest
 #
-#          # Step 6: Deploy to AWS EC2
+#      # Step 6: Set up SSH key
+#      - name: Set up SSH key
+#        run: |
+#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /Users/mohamedogleh/.ssh/id_rsa
+#          chmod 400 ~/.ssh/id_rsa
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      # Step 7: Deploy to AWS EC2
 #      - name: Execute deployment script on EC2
 #        uses: appleboy/ssh-action@v0.1.1
 #        with:
@@ -107,16 +181,13 @@
 #          username: ec2-user
 #          port: 22
 #          key: ${{ secrets.SSH_PRIVATE_KEY }}
-#          #          passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
-##          script: |
-##            docker pull ogleh/ci-cd-repository:latest
-##            docker stop ci-cd-container || true
-##            docker rm ci-cd-container || true
-##            docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
-##
-#
-#
-#
+#          # passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
+#          script: |
+#            docker pull ogleh/ci-cd-repository:latest
+#            docker stop ci-cd-container || true
+#            docker rm ci-cd-container || true
+#            docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
+
 
 
 
@@ -133,11 +204,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Step 1: Check out the code
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Step 2: Set up JDK 17
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
@@ -145,18 +214,15 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      # Step 3: Build with Maven
       - name: Build with Maven
         run: mvn clean package
 
-      # Step 4: Log in to DockerHub
       - name: Log in to DockerHub
         uses: docker/login-action@v2
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
 
-      # Step 5: Build and Push Docker Image
       - name: Build and Push Docker Image
         uses: docker/build-push-action@v5
         with:
@@ -165,15 +231,17 @@ jobs:
           push: true
           tags: ogleh/ci-cd-repository:v1,ogleh/ci-cd-repository:latest
 
-      # Step 6: Set up SSH key
       - name: Set up SSH key
         run: |
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > /Users/mohamedogleh/.ssh/id_rsa
-          chmod 400 ~/.ssh/id_rsa
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
         env:
           SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
 
-      # Step 7: Deploy to AWS EC2
+      - name: Check SSH directory
+        run: ls -al ~/.ssh
+
       - name: Execute deployment script on EC2
         uses: appleboy/ssh-action@v0.1.1
         with:
