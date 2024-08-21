@@ -104,9 +104,9 @@ jobs:
         uses: appleboy/ssh-action@v0.1.1
         with:
           host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
+          username: ogleh
           key: ${{ secrets.EC2_SSH_KEY }}
-#          passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
+          #          passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
           script: |
             docker pull ogleh/ci-cd-repository:latest
             docker stop ci-cd-container || true
@@ -114,3 +114,30 @@ jobs:
             docker run -d --name ci-cd-container -p 8081:8080 ogleh/ci-cd-repository:latest
      
 
+
+
+#  -----BEGIN RSA PRIVATE KEY-----MIIEowIBAAKCAQEAtdGkiNCJ8ENeUBcOlE0AjqDQE4rqIOrqwVzz8p0hxOpvV2gH
+#  xjxOQHtKidTMqtuuhx7g34gq+YuuFPZiOBf8S+TY21qoeV37koFdc7iyOiY6dxop
+#  fWHDR1J0nXpJFimtbSv5ZedNlLE/uHP29CH+KIYeWkiYhR8v92VHAtiWYVxoyq83
+#  cHFiF/z84ysX+JxAmqKnll7nj8CCkGiTBTNrso21EIdq9v6o87lK8reDVmhMey7F
+#  F21E0XJZYRmITFodxB+cUwpwdKAbyVdBPdliC7KBJyhtHuUJIsLczzJRc4A4Qw/9
+#  xxxWUDsLJQesiQbsWMiMjHOsHYNP34YMrYKR4QIDAQABAoIBADNblG5Q+aW0Yd+d
+#  o7CgT5f6NMxQYPILaWRVLVNKr09AKVM3P3rvbeso6FUmlulsRFBGmJ6LiBgVLIcf
+#  UX8mx01oxxiu8wfVVEp94Dff4/go9DrQWQfhpZdv4yDYeeyYuTQtR7VRMMjfiHBB
+#  0XAEahZoTAqUlwCDXrkzEmvrYg794DSaYb4m6pp0H35ZaPmboG4+GmW2eut9VzDe
+#  Uni2Itx95GMPlh11A8tFytDaUE3fllf+XyUfPnlvY7QkPvrZEjqWX/8iuDyrwBiy
+#  rq9hWW4XVkTQDvpsuGNxBB3Ip0KD+xkIVF4RSb5OKWCvM8ynyfhTBhtUtV90gQ0Q
+#  eavLDwECgYEA+TmQiTXOyIEvQpLVF++Miz/t8qKKlr1u96sEOtb/zGsUCSXz0UaU
+#  lk8f6dEsk9MtviVPgNrpi08UpLl+/z25lYo62m1HaPhpDkF5tL844EufcmW452gQ
+#  jL3QlEO1zQx8my16BNuMIyqNZhoGfxP7loHLysqVCW8O9xZWLE4tuJ0CgYEAusL6
+#  hvKa9LrjDXleFeYJ0RjKRWI6FmGU/YjUCRe8M7WnPUWud6faPDx5NlXpLVpL+jTW
+#  wodSxqo5BAn0i7mNGfy00Yfow1hQw5FXXKxtfqkNdz6VFZxWjItQ4QLKjYp7WWtj
+#  Vt41mH2hlx6UCJBSDCh0CelTc7djvsQTrtyAERUCgYBT4t9Wf8kBThJFOz0EmHna
+#  6QLDd5hkUpDGRkbfMzzYZnZQ+fhOSY575VgdkG2LuDoeVVqkSYrwfAa7x0AK05Di
+#  16slmEDAAVUDGmDHyNFxFaMukzSglzNy2/UX4o6P3RMX/D+k4O0TbSA47KuhHG3D
+#  ZB7fPD7b9Qi5fEg3E31qNQKBgGskAg86zJSLRkhrkQMlFgqjmx6UzFgcoRmVznZs
+#  7GYJ1yh6ei1g2PzngG4geQWwoJeoim/MrDsWWmEryOQDjaQT6jOuMWUnnCWlkqWy
+#  sZoRJ416FJLyPmCgZ8S+Ei+C+2KADdw+3CZgJDyKqUgEa11YM8Gf3mUrFwjQea4+
+#  ByZFAoGBAJxBXI5yv8EP/XvjK+aLhrXPuziXKZqcqu/Xi9phrZj/e9yvgovdPHhF
+#  KEl6/Uvf1JxU2yMQt8jzQZC2vWCED4DlhvnUjI1p+frnnd7oEGYQESrZw0N/JHBK
+#  01V9r5SEuOADSRPlICgM8sikj5OZPZQLlCw2hF8PPgo5gecvxVqA-----END RSA PRIVATE KEY-----%
