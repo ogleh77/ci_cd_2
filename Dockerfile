@@ -13,4 +13,3 @@ EXPOSE 8080
 
 # Command to run the jar file
 ENTRYPOINT ["java", "-jar", "ci-cd-repository.jar"]
-]
