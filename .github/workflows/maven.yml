@@ -97,4 +97,4 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: v1,latest
+          tags: ogleh/ci-cd-repository:v1,ogleh/ci-cd-repository:latest
