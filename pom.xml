@@ -62,9 +62,9 @@
                 </configuration>
             </plugin>
         </plugins>
-        <finalName>
-            ci-cd-repository
-        </finalName>
+<!--        <finalName>-->
+<!--            ci-cd-repository-->
+<!--        </finalName>-->
     </build>
 
 </project>
