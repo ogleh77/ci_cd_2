@@ -231,27 +231,28 @@ jobs:
           push: true
           tags: ogleh/ci-cd-repository:v1,ogleh/ci-cd-repository:latest
 
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-        env:
-          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#      - name: Set up SSH key
+#        run: |
+#          mkdir -p ~/.ssh
+#          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+#          chmod 600 ~/.ssh/id_rsa
+#        env:
+#          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+#
+#      - name: Check SSH directory
+#        run: ls -al ~/.ssh
 
-      - name: Check SSH directory
-        run: ls -al ~/.ssh
-
-      - name: Execute deployment script on EC2
-        uses: appleboy/ssh-action@v0.1.1
-        with:
-          host: ${{ secrets.EC2_HOST }}
-          username: ec2-user
-          port: 22
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          # passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
-          script: |
-            docker pull ogleh/ci-cd-repository:latest
-            docker stop ci-cd-container || true
-            docker rm ci-cd-container || true
-            docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
+#
+#      - name: Execute deployment script on EC2
+#        uses: appleboy/ssh-action@v0.1.1
+#        with:
+#          host: ${{ secrets.EC2_HOST }}
+#          username: ec2-user
+#          port: 22
+#          key: ${{ secrets.SSH_PRIVATE_KEY }}
+#          # passphrase: ${{ secrets.EC2_PASSPHRASE }} # Optional, if your key has a passphrase
+#          script: |
+#            docker pull ogleh/ci-cd-repository:latest
+#            docker stop ci-cd-container || true
+#            docker rm ci-cd-container || true
+#            docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
