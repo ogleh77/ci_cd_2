@@ -14,8 +14,11 @@ jobs:
       - name: Pull image from Docker
         run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker pull ogleh/ci-cd-repository:latest
 
+      - name: Stop Docker container
+        run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker stop  ci-cd-container || true
+
       - name: Delete Docker container
-        run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker rm -f ci-cd-container || true
+        run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker rm  ci-cd-container || true
 
       - name: Run the new Docker container
         run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker run -d --name ci-cd-container -p 80:8080 ogleh/ci-cd-repository:latest
