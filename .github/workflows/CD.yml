@@ -11,13 +11,13 @@ jobs:
     runs-on: self-hosted
     steps:
       - name: pull image from docker
-        run: docker pull ogleh/ci-cd-repository:latest
+        run: sudo docker pull ogleh/ci-cd-repository:latest
 
       - name: delete docker container
-        run: docker rm -f ci-cd-container || true
+        run: sudo docker rm -f ci-cd-container || true
 
       - name: running the new docker container
-        run: docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
+        run: sudo  docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
 
 
 #jobs:
