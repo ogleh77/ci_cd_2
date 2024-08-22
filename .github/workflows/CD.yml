@@ -9,15 +9,16 @@ on:
 jobs:
   build:
     runs-on: self-hosted
+
     steps:
-      - name: pull image from docker
-        run: sudo -S docker pull ogleh/ci-cd-repository:latest
+      - name: Pull image from Docker
+        run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker pull ogleh/ci-cd-repository:latest
 
-      - name: delete docker container
-        run: sudo -S docker rm -f ci-cd-container || true
+      - name: Delete Docker container
+        run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker rm -f ci-cd-container || true
 
-      - name: running the new docker container
-        run: sudo -S docker run -d --name ci-cd-container -p80:8080 ogleh/ci-cd-repository:latest
+      - name: Run the new Docker container
+        run: echo "${{ secrets.SUDO_PASSWORD }}" | sudo -S docker run -d --name ci-cd-container -p 80:8080 ogleh/ci-cd-repository:latest
 
 
 #jobs:
